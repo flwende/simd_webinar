@@ -1,0 +1,36 @@
+FC      = ifort
+CC      = icc
+LD      = ifort
+FFLAGS  = -O3 -xcore-avx2 -align rec32byte -align array32byte -openmp -opt-report=5
+CFLAGS  = -O3 -xcore-avx2 -openmp -opt-report=5
+LDFLAGS = -openmp
+
+BIN1 = conditional.xi
+OBJ1 = conditional.o
+BIN2 = conditional_autovec.xi
+OBJ2 = conditional_autovec.o
+BIN3 = conditional_manualvec.xi
+OBJ3 = conditional_manualvec.o
+
+all : $(BIN1) $(BIN2) $(BIN3)
+
+$(BIN1) : $(OBJ1)
+	$(LD) $(LDFLAGS) -o $(BIN1) $<
+
+$(BIN2) : $(OBJ2)
+	$(LD) $(LDFLAGS) -o $(BIN2) $<
+
+$(BIN3) : $(OBJ3)
+	$(LD) $(LDFLAGS) -o $(BIN3) $<
+
+$(OBJ1) : conditional.F90
+	$(FC) $(FFLAGS) -o $(OBJ1) -c $<
+
+$(OBJ2) : conditional.F90
+	$(FC) $(FFLAGS) -DAUTOVEC -o $(OBJ2) -c $<
+
+$(OBJ3) : conditional.F90
+	$(FC) $(FFLAGS) -DMANUALVEC -o $(OBJ3) -c $<
+
+clean:
+	rm -f *.o *.mod $(BIN1) $(BIN2) $(BIN3)
