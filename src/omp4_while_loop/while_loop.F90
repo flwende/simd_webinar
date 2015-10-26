@@ -22,7 +22,7 @@ module simd
       real(c_double) :: x(0:VL-1)
       end type simd_real8
       type, public :: simd_int4
-      real(c_int) :: x(0:VL-1)
+      integer(c_int) :: x(0:VL-1)
       end type simd_int4
       type, public :: simd_mask8
       logical :: x(0:VL-1)
